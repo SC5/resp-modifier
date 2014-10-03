@@ -1,4 +1,4 @@
-var iconv = require('iconv-lite');
+var iconv = require("iconv-lite");
 
 module.exports = function (opt) {
     // options
@@ -116,7 +116,7 @@ module.exports = function (opt) {
         }
 
         function getCharset() {
-            var resCharset = res._headers['content-type'].match(/charset=(.*)/);
+            var resCharset = res._headers["content-type"] ? res._headers["content-type"].match(/charset=(.*)/) : false;
             if (resCharset) {
                 return resCharset[1].toLowerCase();
             }
