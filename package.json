@@ -31,7 +31,9 @@
   "scripts": {
     "test": "gulp lint && mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "iconv-lite": "~0.4.4"
+  },
   "devDependencies": {
     "express": "~3.2.2",
     "gulp": "^3.8.7",

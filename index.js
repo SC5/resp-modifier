@@ -1,3 +1,5 @@
+var iconv = require('iconv-lite');
+
 module.exports = function (opt) {
     // options
     opt = opt || {};
@@ -113,13 +115,27 @@ module.exports = function (opt) {
             res.end = end;
         }
 
+        function getCharset() {
+            var resCharset = res._headers['content-type'].match(/charset=(.*)/);
+            if (resCharset) {
+                return resCharset[1].toLowerCase();
+            }
+            return false;
+        }
+
         res.push = function(chunk) {
             res.data = (res.data || "") + chunk;
         };
 
         res.inject = res.write = function(string, encoding) {
             if (string !== undefined) {
-                var body = string instanceof Buffer ? string.toString(encoding) : string;
+                var charset = getCharset();
+                var body;
+                if (charset) {
+                    body = string instanceof Buffer ? iconv.decode(string, charset) : string;
+                } else {
+                    body = string instanceof Buffer ? string.toString(encoding) : string;
+                }
                 if (html(body) || html(res.data)) {
                     if (exists(body) && !snip(res.data)) {
                         var newString = snap(body);
@@ -168,7 +184,12 @@ module.exports = function (opt) {
                 res.setHeader("content-length", Buffer.byteLength(res.data, encoding));
             }
 
-            res.end(res.data, encoding);
+            var charset = getCharset();
+            if (charset) {
+                res.end(iconv.encode(res.data, charset), encoding);
+            } else {
+                res.end(res.data, encoding);
+            }
         };
         next();
     };
