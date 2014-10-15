@@ -31,13 +31,15 @@
   "scripts": {
     "test": "gulp lint && mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "iconv-lite": "~0.4.4"
+  },
   "devDependencies": {
     "express": "~3.2.2",
     "gulp": "^3.8.7",
     "gulp-jshint": "~1.8.4",
     "mocha": "^1.21.4",
-    "supertest": "~0.13.0"
+    "supertest": "~0.14.0"
   },
   "keywords": []
 }
