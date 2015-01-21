@@ -75,6 +75,7 @@ module.exports = function (opt) {
         if (!ha) {
             return false;
         }
+
         return (~ha.indexOf("html"));
     }
 
@@ -128,7 +129,7 @@ module.exports = function (opt) {
         };
 
         res.inject = res.write = function(string, encoding) {
-            if (string !== undefined) {
+            if (!!string) {
                 var charset = getCharset();
                 var body;
                 if (charset) {
